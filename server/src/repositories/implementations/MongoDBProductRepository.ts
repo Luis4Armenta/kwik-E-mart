@@ -15,17 +15,22 @@ export class MongoDBProductRepository implements IProductRepository {
     return products;
   }
 
-  async doSale (products: [{ _id: string, quantity: number }]): Promise<boolean> {
+  async doSale (products: Array<{ _id: string, quantity: number }>): Promise<boolean> {
     let response: boolean = false;
     
     try {
       products.forEach(async ({ _id, quantity }) => {
-        const res = await Product.updateOne({ _id: _id }, { $inc: { quantity: -quantity } })
-        if (!res.ok) {
-          return false;
+        const quantityAvailable = await Product.findById(_id)
+        
+        if ((quantityAvailable != undefined && quantityAvailable?.quantity) <= 0) {
+          return false
+        } else {
+          const res = await Product.updateOne({ _id: _id }, { $inc: { quantity: -quantity } })
+          if (!res.ok) {
+            response = true
+          }
         }
       });
-      response = true;
     } catch (error) {
       response = false;
       throw new Error(`Ha ocurrido un error al realizar la compra.. \n${error}`);
