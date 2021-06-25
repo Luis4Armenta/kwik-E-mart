@@ -1,0 +1,17 @@
+table {
+  width: 100%;
+}
+
+form {
+  width: 100%
+}
+mat-form-field {
+  width: 100%;
+}
+form mat-form-field input {
+  width: 100%
+}
+
+#board td {
+  cursor: pointer;
+}

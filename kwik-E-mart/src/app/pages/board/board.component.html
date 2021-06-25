@@ -1,0 +1,62 @@
+<div id="search">
+  <form MatFormFieldControl>
+    <mat-form-field appearance="fill">
+      <mat-label>Termino de busqueda</mat-label>
+      <input matInput #term (keyup.enter)="searchProduct( term.value.toLowerCase() )" (click)="seeAllProductss()">
+    </mat-form-field>
+  </form>
+</div>
+
+
+<div id="board">
+  <table mat-table [dataSource]="products">
+  <ng-container matColumnDef="_id">
+      <th mat-header-cell *matHeaderCellDef> ID. </th>
+      <td mat-cell *matCellDef="let product" (click)="addToShoppingList(product)" > {{product._id | slice:0:4}} </td>
+    </ng-container>
+   | currency
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let product" (click)="addToShoppingList(product)" > {{product.name}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <td mat-cell *matCellDef="let product" (click)="addToShoppingList(product)" > {{product.price | currency}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef> Quantity </th>
+      <td mat-cell *matCellDef="let product" (click)="addToShoppingList(product)" > {{product.quantity}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="['_id', 'name', 'price', 'quantity']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['_id', 'name', 'price', 'quantity'];"></tr>
+  </table>
+</div>
+
+<div id="shoppingList">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of shoppingList; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{product.name}}</td>
+        <td>{{product.price | currency}}</td>
+      </tr>
+      <tr>
+        Total {{ total | currency }}
+      </tr>
+    </tbody>
+  </table>
+  
+  <button mat-raised-button color="warn" (click)="clearShoppingList()" [disabled]="total == 0">Clear shppingList</button>
+  <button mat-raised-button color="primary" (click)="doSale()" [disabled]="total == 0">Do sale</button>
+</div>
+

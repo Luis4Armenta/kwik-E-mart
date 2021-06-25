@@ -22,7 +22,6 @@ export class DoSaleUseCase {
       
         const productUpdated = await this.productRepository.doSale(saleForProductRepository);
         const saleSaved = await this.saleRepository.saveSale(sale);
-    
         if (productUpdated && saleSaved) {
           response = true;
         } else {
